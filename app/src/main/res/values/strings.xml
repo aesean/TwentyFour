@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Equal to 24</string>
+    <string name="input_four_num">Input four integers</string>
+    <string name="calculate">Calculate</string>
+    <string name="calculate_result">Calculation result:</string>
+    <string name="not_null">Can\'t be empty</string>
+    <string name="not_zero">Can\'t be zero</string>
+    <string name="not_find_result">Sorry! There is no way to equal to 24</string>
+</resources>
