@@ -9,6 +9,7 @@ import java.util.HashSet;
  * @version V1.0
  * @since 16/7/13
  */
+@SuppressWarnings("WeakerAccess")
 public class TwentyFour {
     private static final String LEFT_BRACKETS = "( ";
     private static final String RIGHT_BRACKETS = " )";

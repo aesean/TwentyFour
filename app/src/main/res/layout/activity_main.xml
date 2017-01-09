@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/input_four_num"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,7 +73,6 @@
         </LinearLayout>
 
         <Button
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="calculate"
@@ -83,13 +82,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/calculate_result"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
         <TextView
             android:id="@+id/tv_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             tools:text="4+5+6+7=24"/>
     </LinearLayout>
 </ScrollView>
