@@ -15,21 +15,23 @@ public class MainActivity extends BaseActivity {
     private EditText mB;
     private EditText mC;
     private EditText mD;
+    private EditText mT;
     private TextView mResult;
 
-    private ICalculate24 mCalculate24;
+    private ICalculateAny mCalculateAny;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mA = (EditText) findViewById(R.id.et_a);
-        mB = (EditText) findViewById(R.id.et_b);
-        mC = (EditText) findViewById(R.id.et_c);
-        mD = (EditText) findViewById(R.id.et_d);
-        mResult = (TextView) findViewById(R.id.tv_result);
+        mA = findViewById(R.id.et_a);
+        mB = findViewById(R.id.et_b);
+        mC = findViewById(R.id.et_c);
+        mD = findViewById(R.id.et_d);
+        mT = findViewById(R.id.et_t);
+        mResult = findViewById(R.id.tv_result);
 
-        mCalculate24 = new Calculate24Impl();
+        mCalculateAny = new CalculateAnyImpl();
     }
 
     public void calculate(View view) {
@@ -41,7 +43,8 @@ public class MainActivity extends BaseActivity {
         String b = mB.getText().toString();
         String c = mC.getText().toString();
         String d = mD.getText().toString();
-        HashSet<String> hashSet = mCalculate24.calculateResult(Integer.valueOf(a), Integer.valueOf(b)
+        String t = mT.getText().toString();
+        HashSet<String> hashSet = mCalculateAny.calculateResult(Integer.valueOf(t), Integer.valueOf(a), Integer.valueOf(b)
                 , Integer.valueOf(c), Integer.valueOf(d));
         StringBuilder stringBuilder = new StringBuilder();
         for (String s : hashSet) {
