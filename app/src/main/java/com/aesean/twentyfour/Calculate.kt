@@ -18,11 +18,16 @@ class CalculateAnyImpl : ICalculateAny {
         nodes.add(Node(b.toString()))
         nodes.add(Node(c.toString()))
         nodes.add(Node(d.toString()))
+
+        fun String.f(): String {
+            return String.format("%2.2f", this.toFloat())
+        }
+
         val tree = Tree(nodes, MathRuleImpl())
         val result = HashSet<String>()
         tree.math {
-            if ((it.number == t.toString()) or (it.number == "$t.0")) {
-                result.add("${it.desc} = ${it.number}")
+            if (Math.abs(it.number.toDouble() - t) < 0.0000000001) {
+                result.add("${it.desc} = ${it.number.f()}")
             }
         }
         return result

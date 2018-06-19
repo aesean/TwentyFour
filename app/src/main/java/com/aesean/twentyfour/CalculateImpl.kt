@@ -2,6 +2,7 @@ package com.aesean.twentyfour
 
 import java.math.BigDecimal
 
+
 interface MathRule {
     fun size(): Int
     fun math(a: String, index: Int, b: String): String
@@ -9,22 +10,29 @@ interface MathRule {
 }
 
 fun main(args: Array<String>) {
-    val source = "1,5,5,5"
-    val numbers = source.split(",")
+    test("8,8,3,3")
+    test("5,5,5,1")
+}
 
+private fun String.format(): String {
+    return String.format("%2.1f", this.toFloat())
+}
+
+private fun test(s: String) {
+    val numbers = s.split(",")
     val nodes = MutableList(numbers.size) {
         Node(numbers[it])
     }
     val tree = Tree(nodes, MathRuleImpl())
     tree.math {
-        if ((it.number == "24.0") or (it.number == "24")) {
-            println("${it.desc} = ${it.number}")
+        if (Math.abs(it.number.toDouble() - 24) < 0.0000000001) {
+            println("${it.desc} = ${it.number.format()}")
         }
     }
     println("**********")
     tree.math {
         if (Math.abs(it.number.toDouble()) <= 10) {
-            println("${it.desc} = ${it.number}")
+            println("${it.desc} = ${it.number.format()}")
         }
     }
 }
@@ -45,16 +53,16 @@ class MathRuleImpl : MathRule {
         val numB = BigDecimal(b)
         when (index) {
             0 -> {
-                return numA.plus(numB).toString()
+                return numA.add(numB).toString()
             }
             1 -> {
-                return numA.minus(numB).toString()
+                return numA.subtract(numB).toString()
             }
             2 -> {
                 return numA.multiply(numB).toString()
             }
             3 -> {
-                return numA.divide(numB).toString()
+                return numA.divide(numB, 16, BigDecimal.ROUND_HALF_UP).toString()
             }
             else -> {
                 throw RuntimeException("Unknown index")
