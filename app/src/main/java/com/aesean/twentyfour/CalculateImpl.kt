@@ -80,14 +80,11 @@ class Tree(private val nodes: MutableList<Node>, private val mathRule: MathRule)
 
             var symbolIndex = 0
             while (symbolIndex < mathRule.size()) {
-
-                val result = MutableList(nodes.size) { nodes[it] }
-                if (left > right) {
-                    result.removeAt(right)
-                    result.removeAt(left - 1)
-                } else {
-                    result.removeAt(left)
-                    result.removeAt(right - 1)
+                val result: MutableList<Node> = ArrayList(nodes.size - 2)
+                nodes.forEachIndexed { index, value ->
+                    if ((index != left) and (index != right)) {
+                        result.add(value)
+                    }
                 }
                 val number: String
                 try {

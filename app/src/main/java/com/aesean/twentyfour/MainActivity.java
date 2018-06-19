@@ -35,7 +35,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void calculate(View view) {
-        if (!check(mA, mB, mC, mD)) {
+        if (!check(mA, mB, mC, mD, mT)) {
             return;
         }
 
