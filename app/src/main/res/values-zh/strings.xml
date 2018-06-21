@@ -6,5 +6,6 @@
     <string name="calculate_result">计算结果:</string>
     <string name="not_null">不能为空</string>
     <string name="not_zero">不能为0</string>
+    <string name="should_be_integer">必须是整数</string>
     <string name="not_find_result">抱歉! 没有找到可以计算出24的方法.</string>
 </resources>

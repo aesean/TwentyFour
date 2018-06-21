@@ -1,5 +1,7 @@
 package com.aesean.twentyfour
 
+import java.math.BigDecimal
+
 /**
  * Calculate.
  *
@@ -8,11 +10,13 @@ package com.aesean.twentyfour
  * @since 6/19/18
  */
 interface ICalculateAny {
-    fun calculateResult(t: Int, a: Int, b: Int, c: Int, d: Int): HashSet<String>
+    fun calculateResult(t: Int, a: Int, b: Int, c: Int, d: Int, callback: (hitCount: Int, allCount: Int, HashSet<String>) -> Unit)
 }
 
 class CalculateAnyImpl : ICalculateAny {
-    override fun calculateResult(t: Int, a: Int, b: Int, c: Int, d: Int): HashSet<String> {
+
+    private val mathRule: MathRule = MathRuleByBigDecimal()
+    override fun calculateResult(t: Int, a: Int, b: Int, c: Int, d: Int, callback: (Int, Int, HashSet<String>) -> Unit) {
         val nodes = ArrayList<Node>(4)
         nodes.add(Node(a.toString()))
         nodes.add(Node(b.toString()))
@@ -23,13 +27,18 @@ class CalculateAnyImpl : ICalculateAny {
             return String.format("%2.2f", this.toFloat())
         }
 
-        val tree = Tree(nodes, MathRuleImpl())
+        val tree = Tree(nodes, mathRule)
         val result = HashSet<String>()
-        tree.math {
-            if (Math.abs(it.number.toDouble() - t) < 0.0000000001) {
+        var allCount = 0
+        var hitCount = 0
+        print(mathRule.toString())
+        tree.find { it: Node ->
+            allCount++
+            if ((BigDecimal(it.number) - BigDecimal(t)).abs() <= BigDecimal(mathRule.deviation())) {
+                hitCount++
                 result.add("${it.desc} = ${it.number.f()}")
             }
         }
-        return result
+        callback.invoke(hitCount, allCount, result)
     }
 }

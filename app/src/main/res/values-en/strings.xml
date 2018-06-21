@@ -6,5 +6,6 @@
     <string name="calculate_result">Calculation result:</string>
     <string name="not_null">Can\'t be empty</string>
     <string name="not_zero">Can\'t be zero</string>
+    <string name="should_be_integer">Should be integer</string>
     <string name="not_find_result">Sorry! There is no way to equal to 24</string>
 </resources>
