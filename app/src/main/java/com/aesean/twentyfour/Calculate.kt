@@ -15,7 +15,7 @@ interface ICalculateAny {
 
 class CalculateAnyImpl : ICalculateAny {
 
-    private val mathRule: MathRule = MathRuleByBigDecimal()
+    private val mCalculateRule: CalculateRule = CalculateRuleByBigDecimal()
     override fun calculateResult(t: Int, a: Int, b: Int, c: Int, d: Int, callback: (Int, Int, HashSet<String>) -> Unit) {
         val nodes = ArrayList<Node>(4)
         nodes.add(Node(a.toString()))
@@ -27,14 +27,14 @@ class CalculateAnyImpl : ICalculateAny {
             return String.format("%2.2f", this.toFloat())
         }
 
-        val tree = Tree(nodes, mathRule)
+        val tree = Tree(nodes, mCalculateRule)
         val result = HashSet<String>()
         var allCount = 0
         var hitCount = 0
-        print(mathRule.toString())
+        print(mCalculateRule.toString())
         tree.find { it: Node ->
             allCount++
-            if ((BigDecimal(it.number) - BigDecimal(t)).abs() <= BigDecimal(mathRule.deviation())) {
+            if ((BigDecimal(it.number) - BigDecimal(t)).abs() <= BigDecimal(mCalculateRule.deviation())) {
                 hitCount++
                 result.add("${it.desc} = ${it.number.f()}")
             }

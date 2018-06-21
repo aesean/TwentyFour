@@ -4,7 +4,7 @@ import java.math.BigDecimal
 import java.util.*
 
 
-interface MathRule {
+interface CalculateRule {
     fun size(): Int
     fun calculate(a: String, index: Int, b: String): String
     fun symbol(index: Int): String
@@ -25,7 +25,7 @@ private fun test(s: String) {
     val nodes = MutableList(numbers.size) {
         Node(numbers[it])
     }
-    val tree = Tree(nodes, MathRuleByBigDecimal())
+    val tree = Tree(nodes, CalculateRuleByBigDecimal())
     tree.find {
         if (Math.abs(it.number.toDouble() - 24) < 0.0000000001) {
             println("${it.desc} = ${it.number.format()}")
@@ -40,7 +40,7 @@ private fun test(s: String) {
 }
 
 
-class MathRuleNormal : MathRule {
+class CalculateRuleNormal : CalculateRule {
 
     companion object {
         val SYMBOLS = arrayOf("+", "-", "×", "÷")
@@ -85,11 +85,11 @@ class MathRuleNormal : MathRule {
     }
 
     override fun toString(): String {
-        return "MathRuleNormal{SYMBOLS = ${Arrays.toString(SYMBOLS)}, deviation = ${deviation()}}"
+        return "CalculateRuleNormal{SYMBOLS = ${Arrays.toString(SYMBOLS)}, deviation = ${deviation()}}"
     }
 }
 
-class MathRuleByBigDecimal : MathRule {
+class CalculateRuleByBigDecimal : CalculateRule {
 
     companion object {
         val SYMBOLS = arrayOf("+", "-", "×", "÷")
@@ -131,23 +131,21 @@ class MathRuleByBigDecimal : MathRule {
     }
 
     override fun toString(): String {
-        return "MathRuleByBigDecimal{SYMBOLS = ${Arrays.toString(SYMBOLS)}, deviation = ${deviation()}}"
+        return "CalculateRuleByBigDecimal{SYMBOLS = ${Arrays.toString(SYMBOLS)}, deviation = ${deviation()}}"
     }
 
 }
 
-class Tree(private val nodes: MutableList<Node>, private val mathRule: MathRule) {
+class Tree(private val nodes: MutableList<Node>, private val calculateRule: CalculateRule) {
 
     private val nodeArrangement = Arrangement(nodes.size)
 
     fun find(filter: (result: Node) -> Unit) {
-        nodeArrangement.reset()
         nodeArrangement.traversal { left: Int, right: Int ->
             val leftNode = nodes[left]
             val rightNode = nodes[right]
 
-            var symbolIndex = 0
-            while (symbolIndex < mathRule.size()) {
+            for (symbolIndex in 0 until calculateRule.size()) {
                 val nextNodes: MutableList<Node> = ArrayList(nodes.size - 2)
                 nodes.forEachIndexed { index, value ->
                     if ((index != left) and (index != right)) {
@@ -156,21 +154,19 @@ class Tree(private val nodes: MutableList<Node>, private val mathRule: MathRule)
                 }
                 val number: String
                 try {
-                    number = mathRule.calculate(leftNode.number, symbolIndex, rightNode.number)
+                    number = calculateRule.calculate(leftNode.number, symbolIndex, rightNode.number)
                 } catch (e: Exception) {
-                    symbolIndex++
                     continue
                 }
                 val node = Node(number)
-                node.desc = "(${leftNode.desc}${mathRule.symbol(symbolIndex)}${rightNode.desc})"
+                node.desc = "(${leftNode.desc}${calculateRule.symbol(symbolIndex)}${rightNode.desc})"
                 nextNodes.add(node)
                 if (nextNodes.size > 1) {
-                    Tree(nextNodes, mathRule).find(filter)
+                    Tree(nextNodes, calculateRule).find(filter)
                 } else {
                     val n = nextNodes[0]
                     filter.invoke(n)
                 }
-                symbolIndex++
             }
         }
     }
@@ -199,13 +195,7 @@ class Arrangement(val size: Int) {
         }
     }
 
-    fun reset() {
-        mainIndex = -1
-        childIndex = -1
-    }
-
     private fun next(): Boolean {
-
         if ((mainIndex == -1) and (childIndex == -1)) {
             mainIndex = 0
             childIndex = 1
@@ -234,6 +224,8 @@ class Arrangement(val size: Int) {
     }
 
     fun traversal(result: (left: Int, right: Int) -> Unit) {
+        mainIndex = -1
+        childIndex = -1
         while (next()) {
             result.invoke(mainIndex, childIndex)
         }
